@@ -6,7 +6,7 @@
 # copy language specific makefile template in project path
 loadMakefile(){
 	if [ ! -e $2/makefile ]; then
-		cat ~/.config/projectGenerator/templates/$1.template > $2/makefile
+		cat ~/.shell-scripts-templates/projectGenerator/templates/$1.template > $2/makefile
 	else
 		echo "A makefile already exists at "$2
 	fi
@@ -18,7 +18,7 @@ loadMakefile(){
 # only if starter file does not exist or is empty
 loadStarterFile(){
 	if [ ! -s $2/main.$1 ]; then
-		cat ~/.config/projectGenerator/templates/$1.start > $2/main.$1
+		cat ~/.shell-scripts-templates/projectGenerator/templates/$1.start > $2/main.$1
 	else
 		echo "A starter file already exists at "$2
 	fi

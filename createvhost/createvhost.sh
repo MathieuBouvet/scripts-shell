@@ -41,7 +41,7 @@ chown mathieu:www-data $vhostName
 # TODO : create vhostName.conf in /etc/apache2/sites-available/
 # using template file in ~/.config/createvhost
 # must replace server_name by wanted serverName and document_root by sourcesDir
-sed -e 's|###vhost_name###|'${vhostName}'|g; s|###document_root###|'${workingDirectory}'|g; s|###sources_dir###|'${sourcesDir}'|g' ~/.config/createvhost/apache-conf.template > /etc/apache2/sites-available/$vhostName.conf
+sed -e 's|###vhost_name###|'${vhostName}'|g; s|###document_root###|'${workingDirectory}'|g; s|###sources_dir###|'${sourcesDir}'|g' ~/.shell-scripts-templates/createvhost/apache-conf.template > /etc/apache2/sites-available/$vhostName.conf
 
 # TODO : activate site using sudo a2ensite serverName.conf
 sudo a2ensite $vhostName.conf
