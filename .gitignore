@@ -1,0 +1,6 @@
+*
+!/.gitignore
+!/createvhost
+!/deployBashScript
+!/projectGenerator
+!/deletevhost
