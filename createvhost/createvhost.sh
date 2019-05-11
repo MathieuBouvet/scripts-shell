@@ -3,7 +3,22 @@
 
 # createvhost
 # usage : createvhost vhost_name [ sources_directory ]
-# if sources_directory is ommited, it will vhost directory will 
+# if sources_directory is ommited, it will default to vhost directory
+
+createSources="0"
+while getopts ":c" opt; do
+	case $opt in
+		c)
+			echo "-c was triggered, creation of basic project"
+			createSources="1"
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG"
+			exit 1
+			;;
+	esac
+done
+shift "$(($OPTIND -1))"
 
 if [ $EUID -ne 0 ]; then
 	echo "ERROR : must be logged as root. Try with sudo ;)"
@@ -35,8 +50,14 @@ fi
 
 mkdir -p $vhostName
 chown mathieu:www-data $vhostName
-#echo "<?php echo 'Hello World ;)'?>" > $sourcesDir/$1/public/index.php
-#chown mathieu:www-data $sourcesDir/$1/public/index.php
+
+if [ $createSources = "1" ]; then
+	mkdir -p $vhostName/$sourcesDir
+	chown mathieu:www-data $vhostName/$sourcesDir/
+	echo "<?php echo 'Hello World ;)'?>" > $vhostName/$sourcesDir/index.php
+	chown mathieu:www-data $vhostName/$sourcesDir/index.php
+fi
+
 
 # TODO : create vhostName.conf in /etc/apache2/sites-available/
 # using template file in ~/.config/createvhost
