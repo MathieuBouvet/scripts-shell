@@ -38,3 +38,5 @@ chmod a+x temp
 scriptName=$(basename $1 | cut -d . -f 1)
 
 mv temp /usr/local/bin/$scriptName
+
+echo $scriptName deployed
