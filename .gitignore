@@ -1,6 +1,1 @@
-*
-!/.gitignore
-!/createvhost
-!/deployBashScript
-!/projectGenerator
-!/deletevhost
+testGetOpts
