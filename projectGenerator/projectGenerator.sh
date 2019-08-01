@@ -27,9 +27,14 @@ loadStarterFile(){
 # createSimpleDirs
 # USAGE : createSimpleDirs path
 # create sources and headers dirs in project root if not exist
-createSimpleDirs(){
+createSimpleDirsForC(){
 	mkdir -p $1/sources
 	mkdir -p $1/headers
+}
+createSimpleDirsForCpp(){
+		mkdir -p $1/src
+		mkdir -p $1/build
+		mkdir -p $1/bin
 }
 
 # generateC_Cpp
@@ -38,7 +43,6 @@ createSimpleDirs(){
 generateC_Cpp(){
 	loadMakefile $1 $2
 	loadStarterFile $1 $2
-	createSimpleDirs $2
 }
 
 projectPath=$(pwd)
@@ -55,10 +59,12 @@ fi
 if [ $1 = "C" ] || [ $1 = "c" ]; then
 	fileExtension="c"
 	generateC_Cpp $fileExtension $projectPath
+	createSimpleDirsForC $2
+
 elif [ $1 = "Cpp" ] || [ $1 = "cpp" ] || [ $1 = "c++" ] || [ $1 = "C++" ]; then
 	fileExtension="cpp";
 	generateC_Cpp $fileExtension $projectPath
-
+	createSimpleDirsForCpp $2
 else
 	echo "ERROR : invalid or unsupported langage"
 	exit 1
