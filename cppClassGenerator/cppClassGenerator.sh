@@ -18,20 +18,20 @@ if [ ! -e $path/main.cpp ]; then
 	exit 1;
 fi
 
-
-if [ ! -s $path/$1.h ]; then
+name=${1^}
+if [ ! -s $path/$name.h ]; then
 	# if definition file is empty or does not exist, create it
 	cat ~/.shell-scripts-templates/cppClassGenerator/classDefinition.template | 
-	sed "s/%HEADER_DEF%/${1^^}/g; s/%CLASS_NAME%/$1/g" > $path/$1.h
+	sed "s/%HEADER_DEF%/${name^^}/g; s/%CLASS_NAME%/${name}/g" > $path/$name.h
 	echo "Generating definition file... OK"
 else
-	echo "definition file already exists for class "$1
+	echo "definition file already exists for class "$name
 fi
 
-if [ ! -s $path/$1.cpp ]; then
+if [ ! -s $path/$name.cpp ]; then
 	# if implementation file is empty or does not exist, create it
-	cat ~/.shell-scripts-templates/cppClassGenerator/classImplementation.template | sed "s/%CLASS_NAME%/$1/" > $path/$1.cpp
+	cat ~/.shell-scripts-templates/cppClassGenerator/classImplementation.template | sed "s/%CLASS_NAME%/${name}/" > $path/$name.cpp
 	echo "Generating implementation file... OK"
 else
-	echo "implementation file already exists for class "$1
+	echo "implementation file already exists for class "$name
 fi
