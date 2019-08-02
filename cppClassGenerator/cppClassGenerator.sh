@@ -6,10 +6,9 @@ if [ -z $1 ]; then
 fi
 path=$PWD
 
-# get last directory using shell expansion to strip evrything except the last directory name
-directory=${path##*/}; 
-
-if [ ! $directory = "src" ]; then
+# place ourselves in src directory if possible
+# TODO : implement a skiping option
+if [ -d ${path}/src ]; then
 	path=${path}/src
 fi
 
