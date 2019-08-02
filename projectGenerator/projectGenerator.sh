@@ -18,6 +18,7 @@ loadMakefile(){
 # only if starter file does not exist or is empty
 loadStarterFile(){
 	if [ ! -s $2/src/main.$1 ]; then
+		mv $2/main.$1 $2/src
 		cat ~/.shell-scripts-templates/projectGenerator/templates/$1.start > $2/src/main.$1
 	else
 		echo "A starter file already exists at "$2
@@ -58,8 +59,8 @@ fi
 #check which langage is provided
 if [ $1 = "C" ] || [ $1 = "c" ]; then
 	fileExtension="c"
-	generateC_Cpp $fileExtension $projectPath
 	createSimpleDirsForC $2
+	generateC_Cpp $fileExtension $projectPath
 
 elif [ $1 = "Cpp" ] || [ $1 = "cpp" ] || [ $1 = "c++" ] || [ $1 = "C++" ] || [ $1 = "h" ]; then
 	fileExtension="cpp";
@@ -70,13 +71,16 @@ elif [ $1 = "Cpp" ] || [ $1 = "cpp" ] || [ $1 = "c++" ] || [ $1 = "C++" ] || [ $
 	if [ $directory = "src" ]; then
 		# if we are in src, we strip it, because we want to execute from the project root,
 		# which is just above in the directory tree
-		projectPath=${projectPath%/src};
+		projectPath=${projectPath%/src}
 	fi
-	echo $projectPath;
-	generateC_Cpp $fileExtension $projectPath
+	echo $projectPath
 	createSimpleDirsForCpp $projectPath
+	generateC_Cpp $fileExtension $projectPath
 else
 	echo "ERROR : invalid or unsupported langage"
 	exit 1
-fi 
+fi
+cd $projectPath
+make
+gnome-terminal -e 'bash -c "bin/run && echo && echo Press ENTER to continue && read line && exit"'
 
