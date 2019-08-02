@@ -6,6 +6,14 @@ if [ -z $1 ]; then
 fi
 path=$PWD
 
+# get last directory using shell expansion to strip evrything except the last directory name
+directory=${path##*/}; 
+
+if [ ! $directory = "src" ]; then
+	path=${path}/src
+fi
+
+
 if [ ! -s $path/$1.h ]; then
 	# if definition file is empty or does not exist, create it
 	cat ~/.shell-scripts-templates/cppClassGenerator/classDefinition.template | 
