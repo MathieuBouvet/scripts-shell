@@ -17,8 +17,8 @@ loadMakefile(){
 # copy language specific starter file in project path
 # only if starter file does not exist or is empty
 loadStarterFile(){
-	if [ ! -s $2/main.$1 ]; then
-		cat ~/.shell-scripts-templates/projectGenerator/templates/$1.start > $2/main.$1
+	if [ ! -s $2/src/main.$1 ]; then
+		cat ~/.shell-scripts-templates/projectGenerator/templates/$1.start > $2/src/main.$1
 	else
 		echo "A starter file already exists at "$2
 	fi
@@ -32,9 +32,9 @@ createSimpleDirsForC(){
 	mkdir -p $1/headers
 }
 createSimpleDirsForCpp(){
-		mkdir -p $1/src
-		mkdir -p $1/build
-		mkdir -p $1/bin
+	mkdir -p $1/src
+	mkdir -p $1/build
+	mkdir -p $1/bin
 }
 
 # generateC_Cpp
@@ -45,7 +45,7 @@ generateC_Cpp(){
 	loadStarterFile $1 $2
 }
 
-projectPath=$(pwd)
+projectPath=$PWD;
 #check if a langage is provided
 if [ -z $1 ]; then
 	echo "ERROR : expects first parameter to be set to a langage"
@@ -61,10 +61,20 @@ if [ $1 = "C" ] || [ $1 = "c" ]; then
 	generateC_Cpp $fileExtension $projectPath
 	createSimpleDirsForC $2
 
-elif [ $1 = "Cpp" ] || [ $1 = "cpp" ] || [ $1 = "c++" ] || [ $1 = "C++" ]; then
+elif [ $1 = "Cpp" ] || [ $1 = "cpp" ] || [ $1 = "c++" ] || [ $1 = "C++" ] || [ $1 = "h" ]; then
 	fileExtension="cpp";
+	
+	# get last directory using shell expansion to strip evrything except the last directory name
+	directory=${projectPath##*/}; 
+
+	if [ $directory = "src" ]; then
+		# if we are in src, we strip it, because we want to execute from the project root,
+		# which is just above in the directory tree
+		projectPath=${projectPath%/src};
+	fi
+	echo $projectPath;
 	generateC_Cpp $fileExtension $projectPath
-	createSimpleDirsForCpp $2
+	createSimpleDirsForCpp $projectPath
 else
 	echo "ERROR : invalid or unsupported langage"
 	exit 1
