@@ -45,6 +45,23 @@ generateC_Cpp(){
 	loadMakefile $1 $2
 	loadStarterFile $1 $2
 }
+run=false
+while getopts "e" opt; do
+	case $opt in
+		e)
+			run=true
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG"
+			exit 1
+			;;
+		:)
+			echo "Option -$OPTARG requires an argument"
+			exit 1
+			;;
+	esac
+done
+shift "$(($OPTIND -1))"
 
 projectPath=$PWD;
 #check if a langage is provided
@@ -82,5 +99,6 @@ else
 fi
 cd $projectPath
 make
-gnome-terminal -e 'bash -c "bin/run && echo && echo Press ENTER to continue && read line && exit"'
-
+if [ "$run" == true ]; then
+	gnome-terminal -e 'bash -c "bin/run && echo && echo Press ENTER to continue && read line && exit"'
+fi
